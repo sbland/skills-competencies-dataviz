@@ -42,6 +42,7 @@ export function BarPlot({
   const categoryIds = [...d3.union(data.map((d) => d.category)).keys()];
 
   const sortedCategories = categoryIds.sort();
+  type Category = (typeof sortedCategories)[number];
 
   const color = getColor(sortedCategories);
 
@@ -58,7 +59,7 @@ included
 
   const columnWidth =
     (usableWidth -
-      categoryPadding * (categoryIds.length -1) -
+      categoryPadding * (categoryIds.length - 1) -
       skillPadding * skillPaddingCount) /
     data.length;
 
@@ -72,18 +73,6 @@ included
     ],
     [0],
   );
-  type Category = (typeof sortedCategories)[number];
-
-  const categoryWidthsMap: Record<Category, number> = sortedCategories.reduce(
-    (acc, category) => ({
-      ...acc,
-      [category]:
-        (groupedByCategory.get(category)?.length ?? 0) * columnWidth +
-        ((groupedByCategory.get(category)?.length ?? -99) - 1) * skillPadding,
-    }),
-    {},
-  );
-
   const categoryLeftPositionsMap: Record<Category, number> =
     categoryLeftPositions
       .slice(0, -1)
@@ -100,6 +89,17 @@ included
       0) *
       skillPadding;
 
+  const categoryWidthsMap: Record<Category, number> = sortedCategories.reduce(
+    (acc, category) => ({
+      ...acc,
+      [category]:
+        (groupedByCategory.get(category)?.length ?? 0) * columnWidth +
+        ((groupedByCategory.get(category)?.length ?? -99) - 1) * skillPadding,
+    }),
+    {},
+  );
+
+  /* React component elements */
   const createAxisNode = (cat: string, dItems: IDataItem[]) => (
     <g
       key={cat}
