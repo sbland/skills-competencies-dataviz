@@ -22,7 +22,7 @@ export default tseslint.config(
         },
       },
     ],
-    ignores: [".storybook/*", "vitest.workspace.ts"],
+    ignores: [".storybook/*", "vitest.workspace.ts", "vite.config.ts"],
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
       ecmaVersion: 2020,
