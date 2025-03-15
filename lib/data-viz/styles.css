@@ -1,0 +1,32 @@
+.bar {
+  &:focus {
+    outline: none;
+  }
+}
+
+.barGroup {
+  &:focus-within {
+    .bar {
+      fill-opacity: 0.5;
+    }
+    .barSegment {
+      fill-opacity: 0.5;
+    }
+    .barOutline {
+      stroke-width: 3;
+      stroke-opacity: 1;
+    }
+  }
+  &:hover {
+    .bar {
+      fill-opacity: 0.5;
+    }
+    .barSegment {
+      fill-opacity: 0.8;
+    }
+    .barOutline {
+      stroke-opacity: 1;
+      stroke-width: 3;
+    }
+  }
+}

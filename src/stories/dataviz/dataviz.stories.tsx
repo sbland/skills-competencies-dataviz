@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { RadialBarChart } from "../../../lib/data-viz/radial-plot";
 import { IDataItem } from "../../../lib/data-viz/lib";
+import { DataVizSelector } from "../../../lib/data-viz/select-dataviz";
 
 const demodata: IDataItem[] = [
   { skill: "node", category: "Tech Skill", lvl: 7 },
@@ -25,13 +25,20 @@ const demodata: IDataItem[] = [
   { skill: "Analysis", category: "Tech Skill", lvl: 4 },
 ];
 
+const generateRandomData = (n: number, categoryCount: number) =>
+  Array.from({ length: n }, (_, i) => ({
+    skill: `skill-${i}`,
+    category: `category-${Math.floor(Math.random() * categoryCount)}`,
+    lvl: Math.floor(Math.random() * 10),
+  }));
+
 const meta = {
-  title: "DataViz/RadialPlot",
-  component: RadialBarChart,
+  title: "DataViz",
+  component: DataVizSelector,
   parameters: {
     layout: "centered",
   },
-} satisfies Meta<typeof RadialBarChart>;
+} satisfies Meta<typeof DataVizSelector>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -39,5 +46,11 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   args: {
     data: demodata,
+  },
+};
+
+export const RandomData: Story = {
+  args: {
+    data: generateRandomData(40, 8),
   },
 };

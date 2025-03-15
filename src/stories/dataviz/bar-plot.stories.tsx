@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { BarPlot, IDataItem } from "../../../lib/data-viz/bar-plot";
-
+import { BarPlot } from "../../../lib/data-viz/bar-plot";
+import { IDataItem } from "../../../lib/data-viz/lib";
 
 const demodata: IDataItem[] = [
   { skill: "node", category: "Tech Skill", lvl: 7 },
@@ -14,7 +14,6 @@ const demodata: IDataItem[] = [
   { skill: "Networking", category: "Communication", lvl: 4 },
   { skill: "Presenting", category: "Communication", lvl: 1 },
 ];
-
 
 const meta = {
   title: "DataViz/BarPlot",

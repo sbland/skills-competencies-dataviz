@@ -1,10 +1,6 @@
 import * as d3 from "d3";
+import { IDataItem } from "./lib";
 
-export interface IDataItem {
-  skill: string;
-  category: string;
-  lvl: number;
-}
 const categoryAxisLabelsHeight = 30;
 
 export interface IBarPlotProps {
@@ -100,7 +96,7 @@ included
   );
 
   /* React component elements */
-  const createAxisNode = (cat: string, dItems: IDataItem[]) => (
+  const createAxisNode = (cat: string, dItems: IDataItem[], i: number) => (
     <g
       key={cat}
       fill={color(cat)}
@@ -122,30 +118,41 @@ included
       >
         {cat}
       </text>
-      {dItems.map((d) => (
+      {dItems.map((d, j) => (
         <g
           key={`${cat}-${d.skill}`}
           transform={`translate(${subX(d.category, d.skill).toString()}, -${(categoryAxisLabelsHeight + 10).toString()})`}
           data-skill={d.skill}
         >
-          <text
+          {/* <text
             transform={`translate(${(columnWidth / 2).toString()}, 0)`}
             fill="black"
             textAnchor="middle"
           >
             {d.skill}
-          </text>
+          </text> */}
           <text
-            transform={`translate(${(columnWidth / 2).toString()}, -20)`}
+            transform={`translate(${(columnWidth / 2).toString()}, -${(d.lvl + 1.5) * 20})`}
             fill="black"
             textAnchor="middle"
           >
             {d.lvl}
           </text>
+          {Array.from({ length: d.lvl }, (v, k) => k + 1).map((lvl) => (
+            <rect
+              key={`${cat}-${d.skill}-${lvl}`}
+              width={columnWidth}
+              height={19}
+              transform={`translate(0, -${(20 + lvl * 20).toString()})`}
+            />
+          ))}
           <rect
             width={columnWidth}
             height={d.lvl * 20}
             transform={`scale(1), translate(0, -${(20 + d.lvl * 20).toString()})`}
+            fill="none"
+            stroke="none"
+            tabIndex={0}
           />
         </g>
       ))}
