@@ -1,8 +1,6 @@
 import * as d3 from "d3";
 import { IDataItem } from "./lib";
 
-const categoryAxisLabelsHeight = 30;
-
 export interface IBarPlotProps {
   data: IDataItem[];
   width?: number;
@@ -13,6 +11,7 @@ export interface IBarPlotProps {
   marginLeft?: number;
   categoryPadding?: number;
   skillPadding?: number;
+  categoryAxisLabelsHeight?: number;
 }
 
 function getColor(categories: string[]): (category: string) => string {
@@ -23,6 +22,8 @@ function getColor(categories: string[]): (category: string) => string {
     .unknown("#ccc") as (category: string) => string;
 }
 
+type Category = string;
+
 export function BarPlot({
   data,
   width = 640,
@@ -32,20 +33,17 @@ export function BarPlot({
   marginLeft = 20,
   categoryPadding = 40,
   skillPadding = 20,
+  categoryAxisLabelsHeight = 30,
 }: IBarPlotProps) {
   const groupedByCategory = d3.group(data, (d) => d.category);
-
   const categoryIds = [...d3.union(data.map((d) => d.category)).keys()];
-
   const sortedCategories = categoryIds.sort();
-  type Category = (typeof sortedCategories)[number];
 
   const color = getColor(sortedCategories);
 
-  /* Calculate the column widths based on the available width
-shared between the categories and the skills with padding
-included
-*/
+  /* Calculate how many skills proceed each skill item
+  This dictates the amount to offset (count * skillPadding) from the start angle
+  */
   const skillPaddingCount = sortedCategories.reduce((acc, category) => {
     const count = (groupedByCategory.get(category)?.length ?? 0) - 1;
     return acc + count;
@@ -53,6 +51,10 @@ included
 
   const usableWidth = width - marginLeft - marginRight;
 
+  /* Calculate the column widths based on the available width
+  shared between the categories and the skills with padding
+  included
+  */
   const columnWidth =
     (usableWidth -
       categoryPadding * (categoryIds.length - 1) -
@@ -77,7 +79,7 @@ included
   const catX = (categoryId: Category) =>
     categoryLeftPositionsMap[categoryId] || -1;
 
-  const subX = (categoryId: Category, skillId: string) =>
+  const skillX = (categoryId: Category, skillId: string) =>
     (groupedByCategory.get(categoryId)?.findIndex((s) => s.skill == skillId) ??
       0) *
       columnWidth +
@@ -96,7 +98,7 @@ included
   );
 
   /* React component elements */
-  const createAxisNode = (cat: string, dItems: IDataItem[], i: number) => (
+  const createAxisNode = (cat: string, dItems: IDataItem[]) => (
     <g
       key={cat}
       fill={color(cat)}
@@ -118,10 +120,10 @@ included
       >
         {cat}
       </text>
-      {dItems.map((d, j) => (
+      {dItems.map((d) => (
         <g
           key={`${cat}-${d.skill}`}
-          transform={`translate(${subX(d.category, d.skill).toString()}, -${(categoryAxisLabelsHeight + 10).toString()})`}
+          transform={`translate(${skillX(d.category, d.skill).toString()}, -${(categoryAxisLabelsHeight + 10).toString()})`}
           data-skill={d.skill}
         >
           {/* <text
