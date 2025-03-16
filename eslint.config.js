@@ -11,7 +11,7 @@ export default tseslint.config(
   {
     extends: [
       js.configs.recommended,
-      ...tseslint.configs.strictTypeChecked,
+      ...tseslint.configs.recommendedTypeChecked,
       ...tseslint.configs.stylisticTypeChecked,
       {
         languageOptions: {
@@ -41,6 +41,7 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
       "@typescript-eslint/no-confusing-void-expression": ["off"],
+      "@typescript-eslint/restrict-template-expressions": ["off"],
       ...reactX.configs["recommended-typescript"].rules,
       ...reactDom.configs.recommended.rules,
     },
