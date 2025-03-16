@@ -13,7 +13,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "format": "prettier --write .",
-    "lint:fix": "eslint --fix ."
+    "lint:fix": "eslint --fix .",
+    "chromatic": "npx chromatic"
   },
   "dependencies": {
     "d3": "^7.9.0",
@@ -52,6 +53,7 @@
     "@vitejs/plugin-react-swc": "^3.8.0",
     "@vitest/browser": "^3.0.8",
     "@vitest/coverage-v8": "^3.0.8",
+    "chromatic": "^11.27.0",
     "eslint": "^9.21.0",
     "eslint-plugin-react-dom": "^1.33.0",
     "eslint-plugin-react-hooks": "^5.1.0",
