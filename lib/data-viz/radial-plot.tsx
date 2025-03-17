@@ -1,3 +1,4 @@
+import React from "react";
 import * as d3 from "d3";
 import { IDataItem } from "./lib";
 import "./styles.css";
@@ -19,8 +20,8 @@ export interface IRadialBarPlotProps {
 function getColor(categories: string[]): (category: string) => string {
   return d3
     .scaleOrdinal()
-    .domain(categories)
-    .range(d3.schemeSpectral[categories.length])
+    .domain([...categories, "unknown"])
+    .range(d3.schemeSpectral[categories.length + 1])
     .unknown("#ccc") as (category: string) => string;
 }
 
@@ -37,8 +38,8 @@ export function RadialBarChart({
   height: _height = undefined,
   innerRadius = 90,
   outerPadding = 120,
-  categoryPadding = 0,
-  skillPadding = 0.1,
+  categoryPadding = 0.1,
+  skillPadding = 0.05,
   arcPercent = 0.8,
   arcStartOffset = 0.1,
   annotationPadding = 30,
@@ -46,13 +47,27 @@ export function RadialBarChart({
 }: IRadialBarPlotProps) {
   const height = _height ?? width;
   const outerRadius = Math.min(width, height) / 2 - outerPadding;
+  const [categoryFocus, setCategoryFocus] = React.useState<string | false>(
+    false,
+  );
   const maxLvl = d3.max(data, (d) => d.lvl) ?? 0;
   const lvlsArray = Array.from({ length: maxLvl }, (_, k) => k + 1);
   const groupedByCategory = d3.group(data, (d) => d.category);
   const categoryIds = [...d3.union(data.map((d) => d.category)).keys()];
   const sortedCategories = categoryIds.sort();
+  const handleSkillSelect = (category: string) => {
+    setCategoryFocus((prevCategoryFocus) =>
+      prevCategoryFocus === category ? false : category,
+    );
+  };
 
-  const color = getColor(sortedCategories);
+  const filteredCategories = categoryFocus ? [categoryFocus] : sortedCategories;
+
+  const filteredData = data.filter((d) =>
+    filteredCategories.includes(d.category),
+  );
+
+  const color = sortedCategories ? getColor(sortedCategories) : () => "black";
 
   /* Total angle used by skills. Remaining is left blank */
   const totalArcAngle = fullCircleAngle * arcPercent;
@@ -60,7 +75,7 @@ export function RadialBarChart({
   /* Calculate how many skills proceed each skill item
   This dictates the amount to offset (count * skillPadding) from the start angle
   */
-  const skillPaddingCount = sortedCategories.reduce((acc, category) => {
+  const skillPaddingCount = filteredCategories.reduce((acc, category) => {
     const count = groupedByCategory.get(category)?.length ?? 0;
     return acc + count;
   }, 0);
@@ -69,17 +84,16 @@ export function RadialBarChart({
   shared between the categories and the skills with padding
   included
   */
-
   const columnAngle =
     (totalArcAngle -
-      categoryPadding * (categoryIds.length - 1) -
+      categoryPadding * (filteredCategories.length - 1) -
       skillPadding * skillPaddingCount) /
-    data.length;
+    filteredData.length;
 
   /* Calculate the start angle for each category based on the number of skills
   in each category and the position of previous categories
   */
-  const categoryStartAngle = sortedCategories.reduce(
+  const categoryStartAngle = filteredCategories.reduce(
     (acc, category) => [
       ...acc,
       acc[acc.length - 1] +
@@ -93,9 +107,9 @@ export function RadialBarChart({
   /* Convert the category start angles to a map for easy access */
   const categoryStartAngleMap: Record<Category, number> = categoryStartAngle
     .slice(0, -1)
-    .reduce((acc, v, i) => ({ ...acc, [sortedCategories[i]]: v }), {});
+    .reduce((acc, v, i) => ({ ...acc, [filteredCategories[i]]: v }), {});
 
-  const skillAngleStart: Record<string, number> = data.reduce(
+  const skillAngleStart: Record<string, number> = filteredData.reduce(
     (acc, d) => ({
       ...acc,
       [`${d.category}-${d.skill}`]:
@@ -160,16 +174,17 @@ export function RadialBarChart({
     return { x, y };
   };
 
-  const skillAnnotationPoint = (d: IDataItem) => {
-    const angle = getSkillAngleStart(d) + columnAngle / 2;
-    const x = Math.sin(angle);
-    const y = -Math.cos(angle);
-    return { x, y };
-  };
+  /* Get the point at the top of each skill bar for annotation */
+  // const skillAnnotationPoint = (d: IDataItem) => {
+  //   const angle = getSkillAngleStart(d) + columnAngle / 2;
+  //   const x = Math.sin(angle);
+  //   const y = -Math.cos(angle);
+  //   return { x, y };
+  // };
 
   const lvlRing = (d3.arc() as unknown as ArcLvlGenerator)
-    .innerRadius((lvl) => y(lvl) - 1)
-    .outerRadius((lvl) => y(lvl) + 1)
+    .innerRadius((lvl) => y(lvl) - 0.5)
+    .outerRadius((lvl) => y(lvl) + 0)
     .startAngle(0)
     .endAngle(totalArcAngle + (fullCircleAngle - totalArcAngle) / 2);
 
@@ -183,7 +198,14 @@ export function RadialBarChart({
   const createBars = (cat: string, dItems: IDataItem[]) => (
     <g key={cat} fill={color(cat)} className="Bars">
       {dItems.map((d) => (
-        <g key={`bar ${cat}-${d.skill}`} className="barGroup">
+        <g
+          key={`bar ${cat}-${d.skill}`}
+          className="barGroup"
+          onClick={() => handleSkillSelect(cat)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleSkillSelect(cat);
+          }}
+        >
           <path
             d={barArc(d)!}
             tabIndex={0}
@@ -199,7 +221,7 @@ export function RadialBarChart({
           />
           {Array.from({ length: d.lvl }, (_, k) => k + 1).map((lvl) => (
             <path
-              key={`bar-segment${cat}-${d.skill}`}
+              key={`bar-segment${cat}-${d.skill}-${lvl}`}
               d={barSegmentArc(d, lvl)!}
               fill={color(cat)}
               className="barSegment"
@@ -212,7 +234,7 @@ export function RadialBarChart({
 
   /* React component to render the radial bar chart */
   const backgroundLvlRings = (cat: string) => (
-    <g key={cat} fill={color(cat)}>
+    <g key={cat}>
       {lvlsArray.map((lvl) => (
         <path
           key={`${cat}-${lvl}`}
@@ -225,6 +247,7 @@ export function RadialBarChart({
     </g>
   );
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const createAnnotation = (cat: string, dItems: IDataItem[]) => (
     <g key={`annotation ${cat}`} fill={color(cat)}>
       <path
@@ -274,7 +297,7 @@ export function RadialBarChart({
         {cat}
       </text>
 
-      {dItems.map((d) => (
+      {/* {dItems.map((d) => (
         <text
           key={`annotation lvl bar ${cat}-${d.skill}`}
           x={skillAnnotationPoint(d).x * y(d.lvl + 0.5)}
@@ -284,7 +307,7 @@ export function RadialBarChart({
         >
           {d.lvl}
         </text>
-      ))}
+      ))} */}
 
       {lvlsArray.map((lvl) => (
         <text
@@ -308,14 +331,14 @@ export function RadialBarChart({
       style={{ border: "1px solid black" }}
       viewBox={`${-width / 2} ${-height / 2} ${width} ${height}`}
     >
-      <g>{sortedCategories.map((c) => backgroundLvlRings(c))}</g>
+      <g>{filteredCategories.map((c) => backgroundLvlRings(c))}</g>
       <g>
-        {sortedCategories.map((c) =>
+        {filteredCategories.map((c) =>
           createBars(c, groupedByCategory.get(c) ?? []),
         )}
       </g>
       <g>
-        {sortedCategories.map((c) =>
+        {filteredCategories.map((c) =>
           createAnnotation(c, groupedByCategory.get(c) ?? []),
         )}
       </g>
