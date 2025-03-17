@@ -15,13 +15,14 @@ export interface IRadialBarPlotProps {
   arcStartOffset?: number;
   annotationPadding?: number;
   categoryLabelWidth?: number;
+  lineThickness?: number;
 }
 
 function getColor(categories: string[]): (category: string) => string {
   return d3
     .scaleOrdinal()
-    .domain([...categories, "unknown"])
-    .range(d3.schemeSpectral[categories.length + 1])
+    .domain(categories)
+    .range(d3.schemeSpectral[categories.length])
     .unknown("#ccc") as (category: string) => string;
 }
 
@@ -42,8 +43,9 @@ export function RadialBarChart({
   skillPadding = 0.05,
   arcPercent = 0.8,
   arcStartOffset = 0.1,
-  annotationPadding = 30,
+  annotationPadding = 10,
   categoryLabelWidth = 100,
+  lineThickness = 2,
 }: IRadialBarPlotProps) {
   const height = _height ?? width;
   const outerRadius = Math.min(width, height) / 2 - outerPadding;
@@ -150,7 +152,7 @@ export function RadialBarChart({
     .padAngle(0.01);
 
   const annotationArc = (d3.arc() as unknown as ArcCategoryGenerator)
-    .innerRadius(innerRadius - 2)
+    .innerRadius(innerRadius + 5)
     .outerRadius(innerRadius)
     .startAngle((category) => categoryStartAngleMap[category] + skillPadding)
     .endAngle(
@@ -239,7 +241,7 @@ export function RadialBarChart({
         <path
           key={`${cat}-${lvl}`}
           d={lvlRing(lvl)!}
-          fill="rgba(0, 0, 0, 0.01)"
+          fill="rgba(127, 127, 127, 0.04)"
           stroke="none"
           strokeWidth={1}
         />
@@ -254,7 +256,7 @@ export function RadialBarChart({
         d={annotationArc(cat)!}
         fill={color(cat)}
         stroke="none"
-        strokeWidth={1}
+        strokeWidth={lineThickness}
       />
       <line
         x1={catAnnotationPointInner(cat).x * innerRadius}
@@ -263,7 +265,7 @@ export function RadialBarChart({
         y2={catAnnotationPointOuter(cat).y * (outerRadius + annotationPadding)}
         stroke={color(cat)}
         fill="none"
-        strokeWidth={1}
+        strokeWidth={lineThickness}
         opacity={1}
       />
       <line
@@ -272,26 +274,43 @@ export function RadialBarChart({
         x2={
           catAnnotationPointOuter(cat).x * (outerRadius + annotationPadding) +
           (catAnnotationPointOuter(cat).x > 0
-            ? categoryLabelWidth
-            : -categoryLabelWidth)
+            ? categoryLabelWidth + 20
+            : -categoryLabelWidth - 20)
         }
         y2={catAnnotationPointOuter(cat).y * (outerRadius + annotationPadding)}
         stroke={color(cat)}
         fill="none"
-        strokeWidth={2}
+        strokeWidth={lineThickness}
+      />
+      {/* box around text */}
+      <rect
+        x={
+          (catAnnotationPointOuter(cat).x > 0
+            ? 0 - 0
+            : -(categoryLabelWidth + 20)) +
+          catAnnotationPointOuter(cat).x * (outerRadius + annotationPadding)
+        }
+        y={
+          catAnnotationPointOuter(cat).y * (outerRadius + annotationPadding) -
+          (catAnnotationPointOuter(cat).y > 0 ? 0 : 30)
+        }
+        width={categoryLabelWidth + 20}
+        height={30}
+        fill={color(cat)}
       />
       <text
         x={
           catAnnotationPointOuter(cat).x * (outerRadius + annotationPadding) +
           (catAnnotationPointOuter(cat).x > 0
-            ? categoryLabelWidth
-            : -categoryLabelWidth)
+            ? categoryLabelWidth + 10
+            : -categoryLabelWidth - 10)
         }
         y={
           catAnnotationPointOuter(cat).y * (outerRadius + annotationPadding) +
           (catAnnotationPointOuter(cat).y > 0 ? 20 : -10)
         }
-        fill="black"
+        fill="white"
+        fontWeight={700}
         textAnchor={catAnnotationPointOuter(cat).x > 0 ? "end" : "start"}
       >
         {cat}
@@ -314,7 +333,7 @@ export function RadialBarChart({
           key={`annotation lvl ${cat}-${lvl}`}
           x={0}
           y={-y(lvl - 0.1)}
-          fill="black"
+          fill="#ccc"
           textAnchor="middle"
           fontSize={10}
         >
