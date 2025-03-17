@@ -28,7 +28,7 @@ jobs:
           node-version: 22.12.0
           cache: "pnpm"
       - name: Install dependencies
-        run: pnpm ci
+        run: pnpm install
       - name: Run linters
         uses: wearerequired/lint-action@v2
         with:
@@ -52,6 +52,6 @@ jobs:
           node-version: 22.12.0
           cache: "pnpm"
       - name: Install dependencies
-        run: pnpm ci
+        run: pnpm install
       - name: Run type checkers
         run: pnpm type-check
