@@ -140,7 +140,7 @@ export function BarPlot({
           >
             {d.lvl}
           </text>
-          {Array.from({ length: d.lvl }, (v, k) => k + 1).map((lvl) => (
+          {Array.from({ length: d.lvl }, (_v, k) => k + 1).map((lvl) => (
             <rect
               key={`${cat}-${d.skill}-${lvl}`}
               width={columnWidth}
