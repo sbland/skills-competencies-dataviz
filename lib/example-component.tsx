@@ -1,1 +1,5 @@
-export const ExampleReactComponent = () => <div>Hello World 2</div>;
+export const ExampleReactComponent = ({ text }: { text: string }) => (
+  <div>
+    Example component text: <b>{text}</b>
+  </div>
+);

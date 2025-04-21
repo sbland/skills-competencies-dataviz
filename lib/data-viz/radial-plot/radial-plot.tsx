@@ -209,7 +209,6 @@ export function RadialBarChart({
     <svg
       width={width}
       height={height}
-      style={{ border: "1px solid black" }}
       viewBox={`${-width / 2} ${-height / 2} ${width} ${height}`}
     >
       <g>{filteredCategories.map((c) => backgroundLvlRings(c))}</g>
