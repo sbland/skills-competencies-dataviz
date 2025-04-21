@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import "../styles.css";
 import { IDataItem } from "../lib";
 import { IRadialBarPlotProps } from "./lib";
@@ -19,9 +19,7 @@ export function RadialBarChart({
   lineThickness = 2,
 }: IRadialBarPlotProps) {
   const height = _height ?? width;
-  const [categoryFocus, setCategoryFocus] = React.useState<string | false>(
-    false,
-  );
+  const [categoryFocus, setCategoryFocus] = useState<string | false>(false);
   const handleSkillSelect = (category: string) => {
     setCategoryFocus((prevCategoryFocus) =>
       prevCategoryFocus === category ? false : category,

@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import { BarPlot, IBarPlotProps } from "./bar-plot";
 import { IRadialBarPlotProps, RadialBarChart } from "./radial-plot";
 
@@ -22,7 +22,7 @@ export const DataVizSelector = ({
   annotationPadding = 30,
   categoryLabelWidth = 70,
 }: IDataVizSelectorProps) => {
-  const [chartType, setChartType] = React.useState<"bar" | "radial">("radial");
+  const [chartType, setChartType] = useState<"bar" | "radial">("radial");
   const Chart = chartType === "bar" ? BarPlot : RadialBarChart;
   const _height = height ?? width;
   const args =
