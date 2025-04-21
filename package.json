@@ -24,14 +24,14 @@
     "react-dom": "^19.0.0"
   },
   "main": "./dist/skills-competencies-dataviz.umd.js",
-  "module": "./dist/skills-competencies-dataviz.es.js",
+  "module": "./dist/skills-competencies-dataviz.js",
   "repository": {
     "type": "git",
     "url": "https://github.com:sbland/skills-competencies-dataviz.git"
   },
   "exports": {
     ".": {
-      "import": "./dist/skills-competencies-dataviz.es.js",
+      "import": "./dist/skills-competencies-dataviz.js",
       "require": "./dist/skills-competencies-dataviz.umd.js"
     }
   },
