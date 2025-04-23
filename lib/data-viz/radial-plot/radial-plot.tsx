@@ -66,7 +66,7 @@ export function RadialBarChart({
       {dItems.map((d) => (
         <g
           key={`bar ${cat}-${d.skill}`}
-          className="barGroup"
+          className="bar-group"
           onClick={() => handleSkillSelect(cat)}
           onKeyDown={(e) => {
             if (e.key === "Enter") handleSkillSelect(cat);
@@ -80,7 +80,7 @@ export function RadialBarChart({
           />
           <path
             d={barArc(d)!}
-            className="barOutline"
+            className="bar-outline"
             fill="none"
             stroke={color(cat)}
             strokeOpacity={0}
@@ -90,7 +90,7 @@ export function RadialBarChart({
               key={`bar-segment${cat}-${d.skill}-${lvl}`}
               d={barSegmentArc(d, lvl)!}
               fill={color(cat)}
-              className="barSegment"
+              className="bar-segment"
             />
           ))}
         </g>

@@ -4,15 +4,15 @@
   }
 }
 
-.barGroup {
+.bar-group {
   &:focus-within {
     .bar {
       fill-opacity: 0.5;
     }
-    .barSegment {
+    .bar-segment {
       fill-opacity: 0.5;
     }
-    .barOutline {
+    .bar-outline {
       stroke-width: 3;
       stroke-opacity: 1;
     }
@@ -21,10 +21,10 @@
     .bar {
       fill-opacity: 0.5;
     }
-    .barSegment {
+    .bar-segment {
       fill-opacity: 0.8;
     }
-    .barOutline {
+    .bar-outline {
       stroke-opacity: 1;
       stroke-width: 3;
     }
