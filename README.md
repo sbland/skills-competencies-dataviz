@@ -2,12 +2,45 @@
 
 This repo contains data visualisations for skills and competencies data.
 
-## Preview
+## Usage Examples
+
+### Vanilla JS
+
+Can be used as below:
+
+```js
+const generateRandomData = (n, categoryCount) =>
+  Array.from({ length: n }, (_, i) => ({
+    skill: `skill-${i}`,
+    category: `category-${Math.floor(Math.random() * categoryCount)}`,
+    lvl: Math.floor(Math.random() * 10),
+  }))
+
+renderRadialPlot('dataviz_root', data, {
+    innerRadius: 0,
+    width: 640,
+    // height: _height:undefined,
+    innerRadius: 80,
+    outerPadding: 100,
+    categoryPadding: 0.1,
+    skillPadding: 0.05,
+    arcPercent: 0.8,
+    arcStartOffset: 0.1,
+    annotationPadding: 10,
+    lineThickness: 2,
+    labelTextColor: "black",
+    lvlTextColor: "#ccc",
+    lvlArcColor: "#121519",
+    // colourList:d3.schemeAccent,
+  })
+```
+
+## Contributing
+
+### Preview
 
 The visualisations can be previewed using storybook.
 Run `pnpm run storybook` to start the storybook server.
-
-## Contributing
 
 ### Linter
 
