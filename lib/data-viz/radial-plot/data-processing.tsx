@@ -16,11 +16,14 @@ Usage:
 const colorFn = getColor(sortedCategories);
 const color = colorFn(category);
 */
-export function getColor(categories: string[]): (category: string) => string {
+export function getColor(
+  categories: string[],
+  colourList: readonly string[] = d3.schemeAccent,
+): (category: string) => string {
   return d3
     .scaleOrdinal()
     .domain(categories)
-    .range(d3.schemeSpectral[categories.length])
+    .range(colourList)
     .unknown("#ccc") as (category: string) => string;
 }
 
@@ -50,7 +53,7 @@ export function radialBarChartPreProcessing({
   width,
   height,
   innerRadius = 90,
-  outerPadding = 120,
+  outerPadding = 140,
   categoryPadding = 0.1,
   skillPadding = 0.05,
   arcPercent = 0.8,
@@ -133,8 +136,9 @@ export function radialBarChartPreProcessing({
 
   /* Function to get the distance from the center of the circle to a y value
     using the radial scale */
-  const y = d3
-    .scaleRadial()
+  const lvlHeight = d3
+    // .scaleRadial()
+    .scaleLinear()
     .domain([0, maxLvl])
     .range([innerRadius, outerRadius]);
 
@@ -143,7 +147,7 @@ export function radialBarChartPreProcessing({
     .startAngle((d) => getSkillAngleStart(d))
     .endAngle((d) => getSkillAngleStart(d) + columnAngle)
     .innerRadius(innerRadius + 1)
-    .outerRadius((d) => y(d.lvl));
+    .outerRadius((d) => lvlHeight(d.lvl));
 
   /* A d3.js arc generator for each segment of a skills bar where a single bar
   is split into segments per level.
@@ -151,16 +155,16 @@ export function radialBarChartPreProcessing({
   const barSegmentArc = (d3.arc() as unknown as ArcDataItemGenerator)
     .startAngle((d) => getSkillAngleStart(d))
     .endAngle((d) => getSkillAngleStart(d) + columnAngle)
-    .innerRadius((_, lvl: number) => y(lvl - 1) + 1)
-    .outerRadius((_, lvl: number) => y(lvl + 0) - 1)
+    .innerRadius((_, lvl: number) => lvlHeight(lvl - 1) + 1)
+    .outerRadius((_, lvl: number) => lvlHeight(lvl + 0) - 1)
     .padRadius(-1)
     .padAngle(0.01);
 
   /* A d3.js arc generator for the arc that is at the base of the category. */
-  const annotationArc = (d3.arc() as unknown as ArcCategoryGenerator)
+  const categoryBaseArc = (d3.arc() as unknown as ArcCategoryGenerator)
     .innerRadius(innerRadius + 5)
     .outerRadius(innerRadius)
-    .startAngle((category) => categoryStartAngleMap[category] + skillPadding)
+    .startAngle((category) => categoryStartAngleMap[category])
     .endAngle(
       (category) =>
         categoryStartAngleMap[category] +
@@ -170,8 +174,8 @@ export function radialBarChartPreProcessing({
 
   /* A d3.js arc generator for the ring that shows each level for the entire plot */
   const lvlRing = (d3.arc() as unknown as ArcLvlGenerator)
-    .innerRadius((lvl) => y(lvl) - 0.5)
-    .outerRadius((lvl) => y(lvl) + 0)
+    .innerRadius((lvl) => lvlHeight(lvl) - 0.5)
+    .outerRadius((lvl) => lvlHeight(lvl) + 0)
     .startAngle(0)
     .endAngle(totalArcAngle + (fullCircleAngle - totalArcAngle) / 2);
 
@@ -183,11 +187,11 @@ export function radialBarChartPreProcessing({
     catAnnotationPointOuter: catAnnotationPointOuter(categoryStartAngleMap),
     barArc,
     barSegmentArc,
-    annotationArc,
+    categoryBaseArc,
     lvlRing,
     lvlsArray,
     outerRadius,
     innerRadius,
-    getYPoint: y,
+    getYPoint: lvlHeight,
   };
 }

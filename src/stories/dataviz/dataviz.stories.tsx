@@ -11,7 +11,11 @@ const demodata: IDataItem[] = [
   { skill: "Mangroupr", category: "Leadership", lvl: 2 },
   { skill: "PM", category: "Leadership", lvl: 1 },
   { skill: "Leader", category: "Leadership", lvl: 5 },
-  { skill: "Networking", category: "Communication", lvl: 4 },
+  {
+    skill: "Networking",
+    category: "Communication and lots of other things",
+    lvl: 4,
+  },
   { skill: "Presenting", category: "Communication", lvl: 1 },
   { skill: "Writing", category: "Communication", lvl: 3 },
   { skill: "Design", category: "Tech Skill", lvl: 4 },
@@ -38,6 +42,13 @@ const meta = {
   parameters: {
     layout: "centered",
   },
+  decorators: [
+    (Story) => (
+      <div style={{ border: "1px solid red" }}>
+        <Story />
+      </div>
+    ),
+  ],
 } satisfies Meta<typeof DataVizSelector>;
 
 export default meta;

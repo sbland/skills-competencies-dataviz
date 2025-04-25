@@ -12,8 +12,11 @@ export interface IRadialBarPlotProps {
   arcPercent?: number;
   arcStartOffset?: number;
   annotationPadding?: number;
-  categoryLabelWidth?: number;
   lineThickness?: number;
+  labelTextColor?: string;
+  lvlTextColor?: string;
+  lvlArcColor?: string;
+  colourList?: readonly string[];
 }
 
 export type Category = string;

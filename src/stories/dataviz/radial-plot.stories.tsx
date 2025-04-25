@@ -31,6 +31,13 @@ const meta = {
   parameters: {
     layout: "centered",
   },
+  decorators: [
+    (Story) => (
+      <div style={{ border: "1px solid red" }}>
+        <Story />
+      </div>
+    ),
+  ],
 } satisfies Meta<typeof RadialBarChart>;
 
 export default meta;

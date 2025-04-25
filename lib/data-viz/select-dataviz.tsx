@@ -16,11 +16,10 @@ export const DataVizSelector = ({
   marginBottom = 20,
   marginLeft = 20,
   innerRadius = 60,
-  outerPadding = 120,
+  outerPadding = 140,
   arcPercent = 0.8,
   arcStartOffset = 0.1,
   annotationPadding = 30,
-  categoryLabelWidth = 70,
 }: IDataVizSelectorProps) => {
   const [chartType, setChartType] = useState<"bar" | "radial">("radial");
   const Chart = chartType === "bar" ? BarPlot : RadialBarChart;
@@ -48,7 +47,6 @@ export const DataVizSelector = ({
           arcPercent,
           arcStartOffset,
           annotationPadding,
-          categoryLabelWidth,
         };
   return (
     <div>
