@@ -39,7 +39,7 @@ export function RadialBarChart({
     groupedByCategory,
     catAnnotationPointInner,
     catAnnotationPointOuter,
-    barArc,
+    barFullHeightArc,
     barSegmentArc,
     categoryBaseArc,
     lvlRing,
@@ -86,13 +86,13 @@ export function RadialBarChart({
           onBlur={() => setHighlightedSkill(false)}
         >
           <path
-            d={barArc(d)!}
+            d={barFullHeightArc(d)!}
             tabIndex={0}
             className="bar"
             fillOpacity={0.0001}
           />
           <path
-            d={barArc(d)!}
+            d={barFullHeightArc(d)!}
             className="bar-outline"
             fill="none"
             stroke={color(cat)}

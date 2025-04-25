@@ -149,6 +149,12 @@ export function radialBarChartPreProcessing({
     .innerRadius(innerRadius + 1)
     .outerRadius((d) => lvlHeight(d.lvl));
 
+    const barFullHeightArc = (d3.arc() as unknown as ArcDataItemGenerator)
+    .startAngle((d) => getSkillAngleStart(d))
+    .endAngle((d) => getSkillAngleStart(d) + columnAngle)
+    .innerRadius(innerRadius + 1)
+    .outerRadius(outerRadius - 1);
+
   /* A d3.js arc generator for each segment of a skills bar where a single bar
   is split into segments per level.
   */
@@ -186,6 +192,7 @@ export function radialBarChartPreProcessing({
     catAnnotationPointInner: catAnnotationPointInner(categoryStartAngleMap),
     catAnnotationPointOuter: catAnnotationPointOuter(categoryStartAngleMap),
     barArc,
+    barFullHeightArc,
     barSegmentArc,
     categoryBaseArc,
     lvlRing,

@@ -23,6 +23,7 @@ const demodata: IDataItem[] = [
   { skill: "Documentation", category: "Communication", lvl: 2 },
   { skill: "Research", category: "Tech Skill", lvl: 3 },
   { skill: "Analysis", category: "Tech Skill", lvl: 4 },
+  { skill: "Missing", category: "Tech Skill", lvl: 0 },
 ];
 
 const meta = {
