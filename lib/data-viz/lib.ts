@@ -1,5 +1,5 @@
 export interface IDataItem {
   skill: string;
   category: string;
-  lvl: number;
+  skill_level: number;
 }

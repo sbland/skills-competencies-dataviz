@@ -4,15 +4,15 @@ import { BarPlot } from "../../../lib/data-viz/bar-plot";
 import { IDataItem } from "../../../lib/data-viz/lib";
 
 const demodata: IDataItem[] = [
-  { skill: "node", category: "Tech Skill", lvl: 7 },
-  { skill: "react", category: "Tech Skill", lvl: 6 },
-  { skill: "Gitf", category: "Tech Skill", lvl: 5 },
-  { skill: "Code", category: "Tech Skill", lvl: 1 },
-  { skill: "Mangroupr", category: "Leadership", lvl: 2 },
-  { skill: "PM", category: "Leadership", lvl: 1 },
-  { skill: "Leader", category: "Leadership", lvl: 5 },
-  { skill: "Networking", category: "Communication", lvl: 4 },
-  { skill: "Presenting", category: "Communication", lvl: 1 },
+  { skill: "node", category: "Tech Skill", skill_level: 7 },
+  { skill: "react", category: "Tech Skill", skill_level: 6 },
+  { skill: "Gitf", category: "Tech Skill", skill_level: 5 },
+  { skill: "Code", category: "Tech Skill", skill_level: 1 },
+  { skill: "Mangroupr", category: "Leadership", skill_level: 2 },
+  { skill: "PM", category: "Leadership", skill_level: 1 },
+  { skill: "Leader", category: "Leadership", skill_level: 5 },
+  { skill: "Networking", category: "Communication", skill_level: 4 },
+  { skill: "Presenting", category: "Communication", skill_level: 1 },
 ];
 
 const meta = {
