@@ -2,7 +2,7 @@
   "name": "skills-competencies-dataviz",
   "description": "A project to visualize skills and competencies",
   "private": false,
-  "version": "0.0.15",
+  "version": "0.0.16",
   "license": "MIT",
   "author": "S. Bland",
   "type": "module",
