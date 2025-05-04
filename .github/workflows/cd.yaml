@@ -27,6 +27,7 @@ jobs:
         run: pnpm install
       - name: Temp fix to publish
         run: |
+          pnpm run build
           echo "//registry.npmjs.org/:_authToken==${{ secrets.NPM_TOKEN }}" > ~/.npmrc
           echo "always-auth=true" >> ~/.npmrc
           echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
