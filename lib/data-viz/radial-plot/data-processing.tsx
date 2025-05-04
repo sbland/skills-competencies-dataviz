@@ -62,7 +62,7 @@ export function radialBarChartPreProcessing({
 }: IRadialBarDataProcessingProps) {
   const outerRadius = Math.min(width, height) / 2 - outerPadding;
 
-  const maxLvl = d3.max(data, (d) => d.lvl) ?? 0;
+  const maxLvl = d3.max(data, (d) => d.skill_level) ?? 0;
   const lvlsArray = Array.from({ length: maxLvl }, (_, k) => k + 1);
   const groupedByCategory = d3.group(data, (d) => d.category);
   const categoryIds = [...d3.union(data.map((d) => d.category)).keys()];
@@ -147,9 +147,9 @@ export function radialBarChartPreProcessing({
     .startAngle((d) => getSkillAngleStart(d))
     .endAngle((d) => getSkillAngleStart(d) + columnAngle)
     .innerRadius(innerRadius + 1)
-    .outerRadius((d) => lvlHeight(d.lvl));
+    .outerRadius((d) => lvlHeight(d.skill_level));
 
-    const barFullHeightArc = (d3.arc() as unknown as ArcDataItemGenerator)
+  const barFullHeightArc = (d3.arc() as unknown as ArcDataItemGenerator)
     .startAngle((d) => getSkillAngleStart(d))
     .endAngle((d) => getSkillAngleStart(d) + columnAngle)
     .innerRadius(innerRadius + 1)

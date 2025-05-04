@@ -4,7 +4,7 @@ const generateRandomData = (n: number, categoryCount: number) =>
   Array.from({ length: n }, (_, i) => ({
     skill: `skill-${i}`,
     category: `category-${Math.floor(Math.random() * categoryCount)}`,
-    lvl: Math.floor(Math.random() * 10),
+    skill_level: Math.floor(Math.random() * 10),
   }));
 
 export const DemoComponent = () => {

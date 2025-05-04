@@ -134,24 +134,26 @@ export function BarPlot({
             {d.skill}
           </text> */}
           <text
-            transform={`translate(${(columnWidth / 2).toString()}, -${(d.lvl + 1.5) * 20})`}
+            transform={`translate(${(columnWidth / 2).toString()}, -${(d.skill_level + 1.5) * 20})`}
             fill="black"
             textAnchor="middle"
           >
-            {d.lvl}
+            {d.skill_level}
           </text>
-          {Array.from({ length: d.lvl }, (_v, k) => k + 1).map((lvl) => (
-            <rect
-              key={`${cat}-${d.skill}-${lvl}`}
-              width={columnWidth}
-              height={19}
-              transform={`translate(0, -${(20 + lvl * 20).toString()})`}
-            />
-          ))}
+          {Array.from({ length: d.skill_level }, (_v, k) => k + 1).map(
+            (lvl) => (
+              <rect
+                key={`${cat}-${d.skill}-${lvl}`}
+                width={columnWidth}
+                height={19}
+                transform={`translate(0, -${(20 + lvl * 20).toString()})`}
+              />
+            ),
+          )}
           <rect
             width={columnWidth}
-            height={d.lvl * 20}
-            transform={`scale(1), translate(0, -${(20 + d.lvl * 20).toString()})`}
+            height={d.skill_level * 20}
+            transform={`scale(1), translate(0, -${(20 + d.skill_level * 20).toString()})`}
             fill="none"
             stroke="none"
             tabIndex={0}

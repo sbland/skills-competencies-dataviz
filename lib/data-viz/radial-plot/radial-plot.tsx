@@ -98,7 +98,7 @@ export function RadialBarChart({
             stroke={color(cat)}
             strokeOpacity={0}
           />
-          {Array.from({ length: d.lvl }, (_, k) => k + 1).map((lvl) => (
+          {Array.from({ length: d.skill_level }, (_, k) => k + 1).map((lvl) => (
             <path
               key={`bar-segment${cat}-${d.skill}-${lvl}`}
               d={barSegmentArc(d, lvl)!}
@@ -238,7 +238,7 @@ export function RadialBarChart({
           {highlightedSkill.skill}
         </text>
         <text y="35" textAnchor="middle">
-          {highlightedSkill.lvl}
+          {highlightedSkill.skill_level}
         </text>
       </g>
     ) : null;
