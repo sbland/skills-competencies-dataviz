@@ -1,0 +1,36 @@
+name: cd-Publish Package to npmjs
+on:
+  push:
+    # Pattern matched against refs/tags
+    tags:
+    - 'v[012].[0-9]+.[0-9]+'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      # Setup .npmrc file to publish to npm
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          registry-url: 'https://registry.npmjs.org'
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install
+      - name: Temp fix to publish
+        run: |
+          echo "//registry.npmjs.org/:_authToken==${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+          echo "always-auth=true" >> ~/.npmrc
+          echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
+          pnpm publish --provenance --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
