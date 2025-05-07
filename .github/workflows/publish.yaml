@@ -1,10 +1,13 @@
-name: cd-Publish Package to npmjs
+name: Publish Package to npmjs
 on:
   push:
     # Pattern matched against refs/tags
     tags:
-    - 'v[012].[0-9]+.[0-9]+'
+      - "v[012].[0-9]+.[0-9]+"
 jobs:
+  test:
+    uses: ./.github/workflows/ci.yaml
+
   build:
     runs-on: ubuntu-latest
     permissions:
@@ -20,8 +23,8 @@ jobs:
       # Setup .npmrc file to publish to npm
       - uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: "22.x"
+          registry-url: "https://registry.npmjs.org"
           cache: "pnpm"
       - name: Install dependencies
         run: pnpm install
@@ -34,4 +37,3 @@ jobs:
           pnpm publish --provenance --access public --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
