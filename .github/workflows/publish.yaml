@@ -28,7 +28,7 @@ jobs:
           cache: "pnpm"
       - name: Install dependencies
         run: pnpm install
-      - name: Temp fix to publish
+      - name: Publish
         run: |
           pnpm run build
           echo "//registry.npmjs.org/:_authToken==${{ secrets.NPM_TOKEN }}" > ~/.npmrc
