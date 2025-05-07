@@ -12,7 +12,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: {
-        main: path.resolve(__dirname, "lib/main.js"),
+        main: path.resolve(__dirname, "src/main.js"),
       },
       name: "skills-competencies-dataviz",
       fileName: "skills-competencies-dataviz",

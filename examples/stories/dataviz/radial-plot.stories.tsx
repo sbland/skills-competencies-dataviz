@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { IDataItem } from "../../../lib/data-viz/lib";
-import { DataVizSelector } from "../../../lib/data-viz/select-dataviz";
+import { RadialBarChart } from "../../../src/data-viz/radial-plot";
+import { IDataItem } from "../../../src/data-viz/lib";
 
 const demodata: IDataItem[] = [
   { skill: "node", category: "Tech Skill", skill_level: 7 },
@@ -11,11 +11,7 @@ const demodata: IDataItem[] = [
   { skill: "Mangroupr", category: "Leadership", skill_level: 2 },
   { skill: "PM", category: "Leadership", skill_level: 1 },
   { skill: "Leader", category: "Leadership", skill_level: 5 },
-  {
-    skill: "Networking",
-    category: "Communication and lots of other things",
-    skill_level: 4,
-  },
+  { skill: "Networking", category: "Communication", skill_level: 4 },
   { skill: "Presenting", category: "Communication", skill_level: 1 },
   { skill: "Writing", category: "Communication", skill_level: 3 },
   { skill: "Design", category: "Tech Skill", skill_level: 4 },
@@ -27,18 +23,12 @@ const demodata: IDataItem[] = [
   { skill: "Documentation", category: "Communication", skill_level: 2 },
   { skill: "Research", category: "Tech Skill", skill_level: 3 },
   { skill: "Analysis", category: "Tech Skill", skill_level: 4 },
+  { skill: "Missing", category: "Tech Skill", skill_level: 0 },
 ];
 
-const generateRandomData = (n: number, categoryCount: number) =>
-  Array.from({ length: n }, (_, i) => ({
-    skill: `skill-${i}`,
-    category: `category-${Math.floor(Math.random() * categoryCount)}`,
-    skill_level: Math.floor(Math.random() * 10),
-  }));
-
 const meta = {
-  title: "DataViz",
-  component: DataVizSelector,
+  title: "DataViz/RadialPlot",
+  component: RadialBarChart,
   parameters: {
     layout: "centered",
   },
@@ -49,7 +39,7 @@ const meta = {
       </div>
     ),
   ],
-} satisfies Meta<typeof DataVizSelector>;
+} satisfies Meta<typeof RadialBarChart>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -57,11 +47,5 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   args: {
     data: demodata,
-  },
-};
-
-export const RandomData: Story = {
-  args: {
-    data: generateRandomData(40, 8),
   },
 };

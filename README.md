@@ -2,6 +2,12 @@
 
 This repo contains data visualisations for skills and competencies data.
 
+The root contains two working directories:
+
+- `src` - contains the library code for the visualisations which is built and
+- distributed as a package.
+- `examples` - contains the storybook code for the visualisations.
+
 ## Usage Examples
 
 ### Vanilla JS
