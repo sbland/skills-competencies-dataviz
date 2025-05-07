@@ -16,7 +16,8 @@
     "build-storybook": "storybook build",
     "format": "prettier --write .",
     "lint:fix": "eslint --fix .",
-    "chromatic": "npx chromatic"
+    "chromatic": "npx chromatic",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "d3": "^7.9.0"
@@ -35,8 +36,18 @@
     ".": {
       "import": "./dist/skills-competencies-dataviz.js",
       "require": "./dist/skills-competencies-dataviz.umd.js"
+    },
+    "./styles.css": {
+      "import": "./dist/skills-competencies-dataviz.css",
+      "require": "./dist/skills-competencies-dataviz.css"
     }
   },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.5",
     "@eslint/js": "^9.21.0",
