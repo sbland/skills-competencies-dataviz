@@ -8,6 +8,14 @@ The root contains two working directories:
 - distributed as a package.
 - `examples` - contains the storybook code for the visualisations.
 
+## Build and publish
+
+The library code is built using vite and published to npm.
+To build locally run `pnpm run build` and the output will be in the `dist` directory.
+
+To release a new version run `pnpm version` then push the changes to the repo
+(including the version tag). Github actions will automatically build and publish the package to npm.
+
 ## Usage Examples
 
 ### Vanilla JS
