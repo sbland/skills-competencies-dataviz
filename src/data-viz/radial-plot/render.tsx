@@ -5,11 +5,11 @@ import { IDataItem } from "../lib.ts";
 import { IRadialBarPlotProps } from "./lib.ts";
 
 export const renderRadialPlot = (
-  rootId: string,
+  element: HTMLElement,
   data: IDataItem[],
   options: Omit<IRadialBarPlotProps, "data">,
 ) => {
-  createRoot(document.getElementById(rootId)!).render(
+  createRoot(element).render(
     <StrictMode>
       <RadialBarChart data={data} {...options} />
     </StrictMode>,
